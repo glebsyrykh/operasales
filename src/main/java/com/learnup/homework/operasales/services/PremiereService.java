@@ -1,47 +1,33 @@
 package com.learnup.homework.operasales.services;
 
+import com.learnup.homework.operasales.annotations.EmailNotify;
 import com.learnup.homework.operasales.model.Premiere;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 @Service
 public class PremiereService {
 
-    private Premiere premiere;
-    private List<Premiere> premiereList;
-
-    public Premiere addPremiere(String title, String description, String ageCategory, Integer capacity) {
-        Random random = new Random();
-        premiere = new Premiere(random.nextLong(), title, description, ageCategory, capacity);
-        if (premiereList == null || premiereList.size() == 0) {
-            premiereList = new ArrayList<>();
-        }
-        premiereList.add(premiere);
-        return premiere;
+    @EmailNotify
+    public void addPremiere(String title, String description, String ageCategory, Integer capacity) {
+        System.out.println("Добавление премьеры: " + title + " Описание: " + description + " " + ageCategory + " ( " + capacity + " зрителей)");
     }
-
+    @EmailNotify
     public void setPremiere(String title, String description, String ageCategory, Integer capacity) {
-        premiere.setTitle(title);
-        premiere.setDescription(description);
-        premiere.setAgeCategory(ageCategory);
-        premiere.setCapacity(capacity);
+        System.out.println("Изменение премьеры: " + title + " Описание: " + description + " " + ageCategory + " ( " + capacity + " зрителей)");
     }
 
     public void deletePremiere() {
-        premiereList.remove(premiere);
+        System.out.println("Удаление премьеры");
     }
 
-    public Premiere getPremiere() {
+    public void getPremiere() {
+        Premiere premiere = new Premiere(Long.valueOf(1), "Название", "Описание", "6+", 100);
         System.out.println(premiere.getTitle()+" "+premiere.getDescription()+" "+premiere.getAgeCategory());
-        return premiere;
     }
 
     public void getPremiereList() {
-        for (Premiere premiere : premiereList) {
-            System.out.println(premiere.getTitle()+" "+premiere.getDescription()+" "+premiere.getAgeCategory());
-        }
+        System.out.println("Список премьер");
+        Premiere premiere = new Premiere(Long.valueOf(2), "Название 2", "Описание 2", "16+", 200);
+        System.out.println(premiere.getTitle()+" "+premiere.getDescription()+" "+premiere.getAgeCategory());
     }
 }

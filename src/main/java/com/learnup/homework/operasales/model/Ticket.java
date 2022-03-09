@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Ticket {
-    private Long ticketId;
+    private Long Id;
     private Long premiereId;
     private Integer place;
     private Integer row;

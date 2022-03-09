@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Premiere {
-    private Long premiereId;
+    private Long Id;
     private String title;
     private String description;
     private String ageCategory;

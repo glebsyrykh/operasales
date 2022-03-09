@@ -1,33 +1,59 @@
 package com.learnup.homework.operasales.services;
 
 import com.learnup.homework.operasales.annotations.EmailNotify;
+import com.learnup.homework.operasales.entities.PremiereEntity;
+import com.learnup.homework.operasales.mappers.MyMapper;
 import com.learnup.homework.operasales.model.Premiere;
+import com.learnup.homework.operasales.repository.JpaPremiereRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PremiereService {
 
+    public JpaPremiereRepository repository;
+    public MyMapper mapper;
+
+    @Autowired
+    public PremiereService(JpaPremiereRepository repository, MyMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
+
     @EmailNotify
     public void addPremiere(String title, String description, String ageCategory, Integer capacity) {
-        System.out.println("Добавление премьеры: " + title + " Описание: " + description + " " + ageCategory + " ( " + capacity + " зрителей)");
+        PremiereEntity newEntity = new PremiereEntity(null, title, description, ageCategory, capacity, 0);
+        repository.save(newEntity);
     }
+
     @EmailNotify
-    public void setPremiere(String title, String description, String ageCategory, Integer capacity) {
-        System.out.println("Изменение премьеры: " + title + " Описание: " + description + " " + ageCategory + " ( " + capacity + " зрителей)");
+    public void setPremiere(PremiereEntity premiereEntity) {
+        final PremiereEntity pr = repository.getById(premiereEntity.getId());
+        repository.save(new PremiereEntity(premiereEntity.getId(), premiereEntity.getTitle(), premiereEntity.getDescription(), premiereEntity.getAgeCategory(), premiereEntity.getCapacity(), pr.getVersion()));
     }
 
-    public void deletePremiere() {
-        System.out.println("Удаление премьеры");
+    public void deletePremiere(PremiereEntity premiereEntity) {
+        repository.delete(premiereEntity);
     }
 
-    public void getPremiere() {
-        Premiere premiere = new Premiere(Long.valueOf(1), "Название", "Описание", "6+", 100);
-        System.out.println(premiere.getTitle()+" "+premiere.getDescription()+" "+premiere.getAgeCategory());
+    public void printPremiere(Long id) {
+        System.out.println(repository.findById(id));
     }
 
-    public void getPremiereList() {
-        System.out.println("Список премьер");
-        Premiere premiere = new Premiere(Long.valueOf(2), "Название 2", "Описание 2", "16+", 200);
-        System.out.println(premiere.getTitle()+" "+premiere.getDescription()+" "+premiere.getAgeCategory());
+    public void printAll() {
+        repository.findAll().forEach(System.out::println);
+    }
+
+    public PremiereEntity getbyId(Long id) {
+        return repository.getById(id);
+    }
+
+    public List<Premiere> getAll() {
+        return repository.findAll().stream()
+                .map(mapper::toDomain)
+                .collect(Collectors.toList());
     }
 }

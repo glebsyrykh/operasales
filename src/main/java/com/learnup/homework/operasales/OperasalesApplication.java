@@ -1,5 +1,6 @@
 package com.learnup.homework.operasales;
 
+import com.learnup.homework.operasales.entities.PremiereEntity;
 import com.learnup.homework.operasales.services.PremiereService;
 import com.learnup.homework.operasales.services.TicketService;
 import org.springframework.boot.SpringApplication;
@@ -10,23 +11,22 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class OperasalesApplication {
 
 	public static void main(String[] args) {
-
 		final ConfigurableApplicationContext ctx = SpringApplication.run(OperasalesApplication.class, args);
-		ctx.getBean(PremiereService.class).addPremiere("Тристан и Изольда", "Описание...", "18+", 300);
-		ctx.getBean(PremiereService.class).getPremiere();
-		System.out.println("-----------");
-		ctx.getBean(PremiereService.class).setPremiere("Кармэн", "Описание2", "16+", 200);
-		ctx.getBean(PremiereService.class).getPremiere();
-		System.out.println("-----------");
-		ctx.getBean(PremiereService.class).addPremiere("Новая опера", "Описание3", "6+", 100);
-		ctx.getBean(PremiereService.class).getPremiereList();
-		System.out.println("-----------");
-		ctx.getBean(PremiereService.class).deletePremiere();
-		ctx.getBean(PremiereService.class).getPremiereList();
 
-		System.out.println("-----------||-----------");
-		ctx.getBean(TicketService.class).buyTicket(Long.valueOf(23424), 5, 6);
-		ctx.getBean(TicketService.class).refundTicket(Long.valueOf(23424));
+		final PremiereService premiereService = ctx.getBean(PremiereService.class);
+		final TicketService ticketService = ctx.getBean(TicketService.class);
+		premiereService.addPremiere("Тристан и Изольда", "Описание...", "18+", 300);
+
+		premiereService.setPremiere(new PremiereEntity(3L, "Лоэнгрин", "Описание 2", "16+", 250, 1));
+
+		premiereService.printPremiere(3L);
+
+		premiereService.printAll();
+		System.out.println("всего премьер:" + premiereService.getAll().size());
+
+		Long ticketId = ticketService.buyTicket(3L, 5, 6);
+		System.out.println("Билет " + ticketId.toString());
+		ticketService.refundTicket(ticketId);
 	}
 
 }

@@ -99,6 +99,7 @@
                 <configuration>
                     <user>postgres</user>
                     <password>postgres</password>
+                    <baselineOnMigrate>true</baselineOnMigrate>
                 </configuration>
             </plugin>
         </plugins>

@@ -7,6 +7,7 @@ import com.learnup.homework.operasales.model.Premiere;
 import com.learnup.homework.operasales.repository.JpaPremiereRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 @Service
 public class PremiereService {
 
-    public JpaPremiereRepository repository;
-    public MyMapper mapper;
+    private JpaPremiereRepository repository;
+    private MyMapper mapper;
 
     @Autowired
     public PremiereService(JpaPremiereRepository repository, MyMapper mapper) {
@@ -24,17 +25,19 @@ public class PremiereService {
     }
 
     @EmailNotify
+    @Transactional
     public void addPremiere(String title, String description, String ageCategory, Integer capacity) {
         PremiereEntity newEntity = new PremiereEntity(null, title, description, ageCategory, capacity, 0);
         repository.save(newEntity);
     }
 
     @EmailNotify
+    @Transactional
     public void setPremiere(PremiereEntity premiereEntity) {
         final PremiereEntity pr = repository.getById(premiereEntity.getId());
         repository.save(new PremiereEntity(premiereEntity.getId(), premiereEntity.getTitle(), premiereEntity.getDescription(), premiereEntity.getAgeCategory(), premiereEntity.getCapacity(), pr.getVersion()));
     }
-
+    @Transactional
     public void deletePremiere(PremiereEntity premiereEntity) {
         repository.delete(premiereEntity);
     }

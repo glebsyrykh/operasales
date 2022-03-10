@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TicketService {
 
-    public JpaTicketRepository repository;
-    public MyMapper mapper;
-    public JpaPremiereRepository premiereRepository;
+    private JpaTicketRepository repository;
+    private MyMapper mapper;
+    private JpaPremiereRepository premiereRepository;
 
     @Autowired
     public TicketService(JpaTicketRepository repository, MyMapper mapper, JpaPremiereRepository premiereRepository) {
@@ -30,7 +30,7 @@ public class TicketService {
         premiereRepository.save(new PremiereEntity(premiere.getId(), premiere.getTitle(), premiere.getDescription(), premiere.getAgeCategory(), premiere.getCapacity()-1, premiere.getVersion()));
         return ticketEntity.getId();
     }
-
+    @Transactional
     public void refundTicket(Long ticketId) {
         TicketEntity ticketEntity = repository.getById(ticketId);
         System.out.println(ticketEntity.getPremiere());

@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class TicketEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_ticket")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_ticket")
     @SequenceGenerator(name = "seq_ticket", sequenceName = "public.seq_ticket", allocationSize = 1)
     private Long id;
 

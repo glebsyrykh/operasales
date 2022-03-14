@@ -1,14 +1,14 @@
 package com.learnup.homework.operasales.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class Premiere {
-    private Long Id;
+    private Long id;
     private String title;
     private String description;
     private String ageCategory;

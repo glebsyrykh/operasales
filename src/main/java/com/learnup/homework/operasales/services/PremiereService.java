@@ -31,15 +31,35 @@ public class PremiereService {
         repository.save(newEntity);
     }
 
-    @EmailNotify
+//    @EmailNotify
+    @Transactional
+    public Long addPremiere(Premiere premiere) {
+        PremiereEntity savedEntity = repository.save(mapper.toEntity(premiere));
+        return savedEntity.getId();
+    }
+
+//    @EmailNotify
     @Transactional
     public void setPremiere(PremiereEntity premiereEntity) {
         final PremiereEntity pr = repository.getById(premiereEntity.getId());
         repository.save(new PremiereEntity(premiereEntity.getId(), premiereEntity.getTitle(), premiereEntity.getDescription(), premiereEntity.getAgeCategory(), premiereEntity.getCapacity(), pr.getVersion()));
     }
+
+//    @EmailNotify
+    @Transactional
+    public void setPremiere(Premiere premiere) {
+        final PremiereEntity pr = repository.getById(premiere.getId());
+        repository.save(new PremiereEntity(premiere.getId(), premiere.getTitle(), premiere.getDescription(), premiere.getAgeCategory(), premiere.getCapacity(), pr.getVersion()));
+    }
+
     @Transactional
     public void deletePremiere(PremiereEntity premiereEntity) {
         repository.delete(premiereEntity);
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 
     public void printPremiere(Long id) {
@@ -52,6 +72,10 @@ public class PremiereService {
 
     public PremiereEntity getbyId(Long id) {
         return repository.getById(id);
+    }
+
+    public Premiere get(Long id) {
+        return mapper.toDomain(repository.getById(id));
     }
 
     public List<Premiere> getAll() {
